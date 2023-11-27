@@ -7,31 +7,59 @@ import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MailIcon from '@mui/icons-material/Mail';
-
+import expresslogo from '../../../assets/expresslogo.png'
+import { NavLink } from 'react-router-dom';
+import useAuth from '../../../hooks/useAuth';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'About', 'Contact',];
 
 function NavBar(props) {
+    const { user } = useAuth();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    const navItems = <List sx={{ display: 'flex', alignItems: 'center' }}>
+        <NavLink className={({ isActive, isPending }) => isPending ? '' : isActive ? 'text-red-500' : ''} to={'/'}>
+            <ListItemButton>
+                <ListItemText>Home</ListItemText>
+            </ListItemButton>
+        </NavLink>
+        <NavLink className={({ isActive, isPending }) => isPending ? '' : isActive ? 'text-red-500' : ''} to={'/dashboard'}>
+            <ListItemButton>
+                <ListItemText>Dashboard</ListItemText>
+            </ListItemButton>
+        </NavLink>
+        {
+
+        }
+        {user ?
+            <NavLink className={({ isActive, isPending }) => isPending ? '' : isActive ? 'text-red-500' : ''} to={'/login'}>
+                <ListItemButton>
+                    <ListItemText>Login</ListItemText>
+                </ListItemButton>
+            </NavLink> :
+            <NavLink className={({ isActive, isPending }) => isPending ? '' : isActive ? 'text-red-500' : ''} to={'/register'}>
+                <ListItemButton>
+                    <ListItemText>Register</ListItemText>
+                </ListItemButton>
+            </NavLink>
+        }
+    </List>
+
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
     };
@@ -74,25 +102,17 @@ function NavBar(props) {
                 MUI
             </Typography>
             <Divider />
-            <List>
-                {navItems.map((item) => (
-                    <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }}>
-                            <ListItemText primary={item} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
+            {navItems}
         </Box>
     );
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box component="nav" sx={{ display: 'flex', position: 'fixed' }}>
             <CssBaseline />
-            <AppBar component="nav">
-                <Toolbar>
+            <AppBar sx={{ backgroundColor: '#0000004D', boxShadow: 'none', color: 'black' }}>
+                <Toolbar component={'div'} sx={{ py: 2, mx: 18, justifyContent: 'space-between', alignItems: 'center' }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -105,16 +125,15 @@ function NavBar(props) {
                     <Typography
                         variant="h6"
                         component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                        sx={{ display: { xs: 'none', sm: 'block' } }}
                     >
-                        MUI
+                        {/* <Avatar src={logo} /> */}
+                        <Typography variant="h6" component="div">
+                            <img src={expresslogo} alt="Logo" style={{ maxHeight: 40 }} />
+                        </Typography>
                     </Typography>
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        {navItems.map((item) => (
-                            <Button key={item} sx={{ color: '#fff' }}>
-                                {item}
-                            </Button>
-                        ))}
+                    <Box sx={{ display: { xs: 'none', sm: 'block', lg: 'flex' } }}>
+                        {navItems}
                         <IconButton
                             size="large"
                             aria-label="show 17 new notifications"
@@ -126,20 +145,6 @@ function NavBar(props) {
                         </IconButton>
                     </Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="error">
-                                <MailIcon />
-                            </Badge>
-                        </IconButton> */}
-                        {/* <IconButton
-                            size="large"
-                            aria-label="show 17 new notifications"
-                            color="inherit"
-                        >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton> */}
                         <IconButton
                             size="large"
                             edge="end"
