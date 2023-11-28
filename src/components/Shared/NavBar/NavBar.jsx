@@ -18,19 +18,31 @@ import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import expresslogo from '../../../assets/expresslogo.png'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const drawerWidth = 240;
 
 function NavBar(props) {
-    const { user } = useAuth();
+    const { user, logOut } = useAuth();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const navigate = useNavigate();
+
+    const handleLogOut = () => {
+        logOut();
+        navigate('/login')
+        Swal.fire({
+            title: "Log Out Successful!",
+            text: "You've been logged Out!",
+            icon: "success"
+        });
+    }
 
     const navItems = <List sx={{ display: 'flex', alignItems: 'center' }}>
         <NavLink className={({ isActive, isPending }) => isPending ? '' : isActive ? 'text-red-500' : ''} to={'/'}>
@@ -47,17 +59,23 @@ function NavBar(props) {
 
         }
         {user ?
+            <button className={({ isActive, isPending }) => isPending ? '' : isActive ? 'text-red-500' : ''} onClick={handleLogOut}>
+                <ListItemButton>
+                    <ListItemText>Log Out</ListItemText>
+                </ListItemButton>
+            </button>
+            :
             <NavLink className={({ isActive, isPending }) => isPending ? '' : isActive ? 'text-red-500' : ''} to={'/login'}>
                 <ListItemButton>
                     <ListItemText>Login</ListItemText>
                 </ListItemButton>
-            </NavLink> :
-            <NavLink className={({ isActive, isPending }) => isPending ? '' : isActive ? 'text-red-500' : ''} to={'/register'}>
-                <ListItemButton>
-                    <ListItemText>Register</ListItemText>
-                </ListItemButton>
             </NavLink>
         }
+        <NavLink className={({ isActive, isPending }) => isPending ? '' : isActive ? 'text-red-500' : ''} to={'/register'}>
+            <ListItemButton>
+                <ListItemText>Register</ListItemText>
+            </ListItemButton>
+        </NavLink>
     </List>
 
     const handleDrawerToggle = () => {
@@ -109,9 +127,9 @@ function NavBar(props) {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <Box component="nav" sx={{ display: 'flex', position: 'fixed' }}>
+        <Box component="nav" sx={{ display: 'flex', position: 'fixed' , zIndex: 10 }}>
             <CssBaseline />
-            <AppBar sx={{ backgroundColor: '#0000004D', boxShadow: 'none', color: 'black' }}>
+            <AppBar sx={{ backgroundColor: '#0000004D', boxShadow: 'none', color: 'white', }}>
                 <Toolbar component={'div'} sx={{ py: 2, mx: 18, justifyContent: 'space-between', alignItems: 'center' }}>
                     <IconButton
                         color="inherit"

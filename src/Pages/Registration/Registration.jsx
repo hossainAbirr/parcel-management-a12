@@ -13,12 +13,18 @@ import Swal from 'sweetalert2';
 import { updateProfile } from 'firebase/auth';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import { imageUpload } from '../../hooks/imageUpload';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useState } from 'react';
 
 const Registration = () => {
     const axiosPublic = useAxiosPublic();
     const { googleLogIn, createUser, logOut } = useAuth();
     const navigate = useNavigate();
+    const [role, setRole] = useState('');
 
+    const handleChange = (event) => {
+        setRole(event.target.value);
+    };
     const handleGoogle = () => {
         googleLogIn()
             .then(result => {
@@ -39,6 +45,7 @@ const Registration = () => {
         e.preventDefault();
         const form = e.target;
         const username = form.username.value;
+        const usertype = form.usertype.value;
         const email = form.email.value;
         const password = form.password.value;
         const photo = form.photo.files[0];
@@ -48,9 +55,9 @@ const Registration = () => {
 
         const userInfo = {
             name: username,
+            usertype: usertype,
             email: email,
             photoURL: imageUrl.data.display_url,
-            role: ''
         }
 
         createUser(email, password)
@@ -121,6 +128,21 @@ const Registration = () => {
                                         name="username"
                                         autoComplete="username"
                                     />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">User Type</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={role}
+                                            label="User Type"
+                                            onChange={handleChange}
+                                        >
+                                            <MenuItem value={'user'}>User</MenuItem>
+                                            <MenuItem value={'delivery'}>Delivery Man</MenuItem>
+                                        </Select>
+                                    </FormControl>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
