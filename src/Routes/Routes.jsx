@@ -8,6 +8,7 @@ import BookParcel from "../Pages/Dashboard/BookParcel/BookParcel";
 import PrivateRoute from "./PrivateRoute";
 import MyParcel from "../Pages/Dashboard/MyParcel/MyParcel";
 import UpdateBooking from "../Pages/Dashboard/UpdateBooking/UpdateBooking";
+import UpdateProfile from "../Pages/Dashboard/UpdateProfile/UpdateProfile";
 
 const myRouter = createBrowserRouter([
     {
@@ -41,9 +42,13 @@ const myRouter = createBrowserRouter([
                 element: <PrivateRoute><MyParcel></MyParcel></PrivateRoute>,
             },
             {
+                path: '/dashboard/updateProfile',
+                element: <PrivateRoute><UpdateProfile></UpdateProfile></PrivateRoute>,
+                loader: () => fetch(`http://localhost:2132/users?email=${user?.email}`)
+            },
+            {
                 path: '/dashboard/updateBooking/:id',
                 element: <PrivateRoute><UpdateBooking></UpdateBooking></PrivateRoute>,
-                loader: ({params}) => fetch(`http://localhost:2132/singleBooking/${params.id}`)
             },
         ]
     }

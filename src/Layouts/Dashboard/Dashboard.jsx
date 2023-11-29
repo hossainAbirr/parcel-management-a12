@@ -64,7 +64,7 @@ const Dashboard = () => {
                                 :
                                 <>
                                     <li>
-                                        <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/dashboard/userHome`}>
+                                        <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/dashboard/updateProfile`}>
                                             <ImProfile className="w-6 h-6"></ImProfile>
                                             My Profile
                                         </NavLink>

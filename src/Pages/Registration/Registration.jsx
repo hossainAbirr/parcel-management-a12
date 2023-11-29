@@ -22,6 +22,7 @@ const Registration = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState('');
 
+    console.log(role);
     const handleChange = (event) => {
         setRole(event.target.value);
     };
@@ -45,7 +46,6 @@ const Registration = () => {
         e.preventDefault();
         const form = e.target;
         const username = form.username.value;
-        const usertype = form.usertype.value;
         const email = form.email.value;
         const password = form.password.value;
         const photo = form.photo.files[0];
@@ -55,7 +55,7 @@ const Registration = () => {
 
         const userInfo = {
             name: username,
-            usertype: usertype,
+            role: role,
             email: email,
             photoURL: imageUrl.data.display_url,
         }
@@ -131,10 +131,8 @@ const Registration = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">User Type</InputLabel>
+                                        <InputLabel >User Type</InputLabel>
                                         <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
                                             value={role}
                                             label="User Type"
                                             onChange={handleChange}

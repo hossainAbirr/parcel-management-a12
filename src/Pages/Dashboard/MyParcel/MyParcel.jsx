@@ -4,12 +4,16 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import componentLoading from '../../../assets/loading.json'
 import Lottie from "lottie-react";
 import { Link } from "react-router-dom";
+import useStatus from "../../../hooks/useStatus";
+import useAuth from "../../../hooks/useAuth";
 const MyParcel = () => {
+    const { user } = useAuth();
+    const { displayName, email, photoURL } = user;
     const [filterText, setFilterText] = useState('');
-    const [bookings, , isLoading] = useBookings(filterText);
+    const [bookings, refetch, isLoading] = useBookings(filterText);
     const [mapedBookings, setMapedBookings] = useState([]);
     const [isShow, setIsShow] = useState(false);
-    console.log(isLoading);
+    const handleStatus = useStatus('cancelled'); // give it a string as a status
 
     useEffect(() => {
         const filteredData = bookings.filter(parcel => parcel.status.toLowerCase().includes(filterText.toLowerCase()))
@@ -76,13 +80,66 @@ const MyParcel = () => {
                                 {booking.status === 'pending' &&
                                     <>
                                         <Link to={`/dashboard/updateBooking/${booking._id}`} className="btn btn-outline btn-xs">Update</Link >
-                                        <button className="btn btn-outline btn-xs">Cancel</button>
+                                        <button onClick={() => handleStatus(booking._id)} className="btn btn-outline btn-xs">Cancel</button>
                                     </>
                                 }
                                 {
                                     booking.status === 'delivered' &&
                                     <>
-                                        <button className="btn btn-xs btn-outline">Review</button>
+                                        <button onClick={() => document.getElementById('my_modal_1').showModal()} className="btn btn-xs btn-outline">Review</button>
+                                        {/* Open the modal using document.getElementById('ID').showModal() method */}
+
+                                        <dialog id="my_modal_1" className="modal">
+                                            <div className="modal-box">
+                                                <h3 className="font-bold text-lg">Hello!</h3>
+
+
+                                                <form className="card-body ">
+                                                    {/* name email row  */}
+                                                    <div className="form-control flex-row gap-5 ">
+                                                        <div className="flex-1">
+                                                            <label className="label">
+                                                                <span className="label-text">Name</span>
+                                                            </label>
+                                                            <input defaultValue={displayName} readOnly type="text" name="name" placeholder="Name" className="input input-bordered w-full" required />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <label className="label">
+                                                                <span className="label-text">Email</span>
+                                                            </label>
+                                                            <input readOnly defaultValue={photoURL} type="text" name="photo" placeholder="Photo" className="input input-bordered w-full" required />
+                                                        </div>
+                                                    </div>
+                                                    {/* phone & parcel type  */}
+                                                    <div className="form-control flex-row gap-5">
+                                                        <div className="flex-1">
+                                                            <label className="label">
+                                                                <span className="label-text">Phone Number</span>
+                                                            </label>
+                                                            <input type="tel" placeholder="Phone Number" name="phone" className="input input-bordered w-full" required />
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <label className="label">
+                                                                <span className="label-text">Parcel Type</span>
+                                                            </label>
+                                                            <input type="text" placeholder="Parcel Type" name="type" className="input input-bordered w-full" required />
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-control mt-6">
+                                                        <button className="btn bg-[#f5ebe0] hover:bg-[#e29578]">Book Now</button>
+                                                    </div>
+                                                </form>
+
+
+
+                                                <div className="modal-action">
+                                                    <form method="dialog">
+                                                        {/* if there is a button in form, it will close the modal */}
+                                                        <button className="btn">Close</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </dialog>
                                     </>
                                 }
                             </td>

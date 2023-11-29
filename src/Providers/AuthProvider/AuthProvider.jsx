@@ -38,12 +38,20 @@ const AuthProvider = ({ children }) => {
         }
     }, [auth])
 
+    const updateUserProfile = (user, username, imageUrl) => {
+        updateProfile(user, {
+            displayName: username,
+            photoURL: imageUrl.data.display_url,
+        })
+    }
+
     const authInfo = {
         user,
         loading,
         createUser,
         googleLogIn,
-        logOut
+        logOut,
+        updateUserProfile
     }
     return (
         <AuthContext.Provider value={authInfo}>
