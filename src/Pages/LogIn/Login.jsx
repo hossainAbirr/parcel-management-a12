@@ -11,34 +11,70 @@ import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import useAuth from '../../hooks/useAuth';
+import { useQuery } from '@tanstack/react-query';
 const Login = () => {
 
-    const {googleLogIn} = useAuth();
-    const axiosPublic  = useAxiosPublic();
+    const { googleLogIn, logIn } = useAuth();
+    const axiosPublic = useAxiosPublic();
     const navigate = useNavigate();
 
+    const { data: usersInDatabase = [] } = useQuery({
+        queryKey: ['usersInDatabase'],
+        queryFn: async () => {
+            const res = await axiosPublic.get('/users');
+            const userMaped = await res.data.map(obj => obj.email)
+            return userMaped
+        }
+    })
+    console.log(usersInDatabase);
     const handleGoogle = () => {
         googleLogIn()
             .then(result => {
                 console.log(result);
                 navigate('/')
                 Swal.fire({
-                    title: "Registration Successful",
+                    title: "Log In Successful",
                     text: "Welcome To Parcel Management",
                     icon: "success"
                 });
-                const userInfo = {
-                    name: result.user?.displayName,
-                    email : result.user?.email,
-                    role: '',
-                }
-                axiosPublic.post('http://localhost:2132/users', userInfo)
+                const duplicateUser = usersInDatabase.find(email => email === result.user.email)
+                console.log(duplicateUser);
+                if (!duplicateUser) {
+                    const userInfo = {
+                        name: result.user?.displayName,
+                        email: result.user?.email,
+                        role: '',
+                    }
+                    axiosPublic.post('http://localhost:2132/users', userInfo)
                         .then(result => {
                             console.log(result);
                         })
                         .catch(error => {
                             console.error(error);
                         })
+                }
+
+            })
+            .catch(error => {
+                console.error(error);
+            })
+    }
+
+    const handleLogIn = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        console.log(email, password);
+        logIn(email, password)
+            .then(result => {
+                console.log(result);
+                navigate('/')
+                Swal.fire({
+                    title: "Log In Successful",
+                    text: "Welcome To Parcel Management",
+                    icon: "success"
+                });
             })
             .catch(error => {
                 console.error(error);
@@ -70,7 +106,7 @@ const Login = () => {
                         }} gutterBottom>
                             Login with your Email And Password
                         </Typography>
-                        <form>
+                        <form onSubmit={handleLogIn}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <TextField

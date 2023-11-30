@@ -9,6 +9,9 @@ import PrivateRoute from "./PrivateRoute";
 import MyParcel from "../Pages/Dashboard/MyParcel/MyParcel";
 import UpdateBooking from "../Pages/Dashboard/UpdateBooking/UpdateBooking";
 import UpdateProfile from "../Pages/Dashboard/UpdateProfile/UpdateProfile";
+import AllParcel from "../Pages/Dashboard/AllParcel/AllParcel";
+import AllDeliveryMen from "../Pages/Dashboard/AllDeliveryMen/AllDeliveryMen";
+import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
 
 const myRouter = createBrowserRouter([
     {
@@ -33,6 +36,8 @@ const myRouter = createBrowserRouter([
         path: '/dashboard',
         element: <Dashboard></Dashboard>,
         children: [
+
+            // user routes 
             {
                 path: '/dashboard/bookParcel',
                 element: <PrivateRoute><BookParcel></BookParcel></PrivateRoute>
@@ -44,12 +49,25 @@ const myRouter = createBrowserRouter([
             {
                 path: '/dashboard/updateProfile',
                 element: <PrivateRoute><UpdateProfile></UpdateProfile></PrivateRoute>,
-                loader: () => fetch(`http://localhost:2132/users?email=${user?.email}`)
             },
             {
                 path: '/dashboard/updateBooking/:id',
                 element: <PrivateRoute><UpdateBooking></UpdateBooking></PrivateRoute>,
             },
+
+            // admin routes 
+            {
+                path:'/dashboard/allParcel',
+                element: <PrivateRoute><AllParcel></AllParcel></PrivateRoute>
+            },
+            {
+                path:'/dashboard/allDeliveryMen',
+                element: <PrivateRoute><AllDeliveryMen></AllDeliveryMen></PrivateRoute>
+            },
+            {
+                path:'/dashboard/allUsers',
+                element: <PrivateRoute><AllUsers></AllUsers></PrivateRoute>
+            }
         ]
     }
 ]);

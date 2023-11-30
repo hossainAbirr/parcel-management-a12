@@ -87,8 +87,6 @@ const MyParcel = () => {
                                     booking.status === 'delivered' &&
                                     <>
                                         <button onClick={() => document.getElementById('my_modal_1').showModal()} className="btn btn-xs btn-outline">Review</button>
-                                        {/* Open the modal using document.getElementById('ID').showModal() method */}
-
                                         <dialog id="my_modal_1" className="modal">
                                             <div className="modal-box">
                                                 <h3 className="font-bold text-lg">Hello!</h3>

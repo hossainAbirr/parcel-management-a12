@@ -3,14 +3,14 @@ import { BsGraphUp } from "react-icons/bs";
 import { FaUsers } from 'react-icons/fa';
 import deliveryMen from '../../assets/delivery-man.png'
 import parcel from '../../assets/parcel.png'
-import { MdOutlineReviews } from "react-icons/md";
+import { MdHome, MdOutlineReviews } from "react-icons/md";
 import { CiCircleList } from "react-icons/ci";
 import { FaBookOpenReader } from "react-icons/fa6";
 import { ImProfile } from "react-icons/im";
 import useGradient from "../../hooks/useGradientBg";
 const Dashboard = () => {
     const gradientBg = useGradient();
-    const isAdmin = false
+    const isAdmin = true
     const isDelivery = false
     return (
         <div className="font-fontInter flex">
@@ -21,25 +21,25 @@ const Dashboard = () => {
                     {
                         isAdmin ? <>
                             <li>
-                                <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/dashboard/adminHome`}>
+                                <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/dashboard/statistics`}>
                                     <BsGraphUp className="w-6 h-6"></BsGraphUp>
                                     Statistics
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/dashboard/add`}>
+                                <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/dashboard/allParcel`}>
                                     <img className="w-[24px]" src={parcel} alt="" />
                                     All Parcels
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/dashboard/manage`}>
+                                <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/dashboard/allDeliveryMen`}>
                                     <img className="w-[24px]" src={deliveryMen} alt="" />
                                     All Delivery Men
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/dashboard/users`}>
+                                <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/dashboard/allUsers`}>
                                     <FaUsers className="w-6 h-6"></FaUsers>
                                     All Users
                                 </NavLink>
@@ -83,6 +83,12 @@ const Dashboard = () => {
                                     </li>
                                 </>
                     }
+                    <li>
+                        <NavLink className="flex gap-3 items-center font-medium font-fontCinzel" to={`/`}>
+                            <MdHome className="text-2xl"></MdHome>
+                            Home
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
             {/* dashboard content  */}

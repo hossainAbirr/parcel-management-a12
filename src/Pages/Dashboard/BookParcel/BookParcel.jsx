@@ -63,8 +63,8 @@ const BookParcel = () => {
             recieverName: recieverName,
             deliveryAddress: deliveryAddress,
             recieverPhone: recieverPhone,
-            latitude: latitude,
-            longitude: longitude,
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude),
             requestedDeliveryDate: requestedDeliveryDate,
             approximateDeliveryDate: formattedDate,
             bookingDate: formattedBookingDate,
@@ -152,13 +152,13 @@ const BookParcel = () => {
                             <label className="label">
                                 <span className="label-text">Delivery Address Latitude</span>
                             </label>
-                            <input type="number" placeholder="Delivery Address Latitude" name="latitude" className="input input-bordered w-full" required />
+                            <input type="text" placeholder="Delivery Address Latitude" name="latitude" className="input input-bordered w-full" required />
                         </div>
                         <div className="flex-1">
                             <label className="label">
                                 <span className="label-text">Delivery Address longitude</span>
                             </label>
-                            <input type="number" placeholder="Delivery Address longitude" name="longitude" className="input input-bordered w-full" required />
+                            <input type="text" placeholder="Delivery Address longitude" name="longitude" className="input input-bordered w-full" required />
                         </div>
                     </div>
 

@@ -1,4 +1,5 @@
 
+import Swal from "sweetalert2";
 import useAxiosPublic from "./useAxiosPublic";
 import useBookings from "./useBookings";
 
@@ -14,6 +15,11 @@ const useStatus = (statusText) => {
       .then(res => {
         console.log(res.data)
         if (res.data.modifiedCount > 0) {
+          Swal.fire({
+            title: "Congratulations!",
+            text: "Status has been updated!",
+            icon: "success"
+          });
           refetch();
         }
       })
