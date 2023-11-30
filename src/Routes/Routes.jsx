@@ -12,6 +12,7 @@ import UpdateProfile from "../Pages/Dashboard/UpdateProfile/UpdateProfile";
 import AllParcel from "../Pages/Dashboard/AllParcel/AllParcel";
 import AllDeliveryMen from "../Pages/Dashboard/AllDeliveryMen/AllDeliveryMen";
 import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
+import Statistics from "../Pages/Dashboard/Statistics/Statistics";
 
 const myRouter = createBrowserRouter([
     {
@@ -56,6 +57,10 @@ const myRouter = createBrowserRouter([
             },
 
             // admin routes 
+            {
+                path:'/dashboard/statistics',
+                element: <PrivateRoute><Statistics></Statistics></PrivateRoute>
+            },
             {
                 path:'/dashboard/allParcel',
                 element: <PrivateRoute><AllParcel></AllParcel></PrivateRoute>

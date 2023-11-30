@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import useAllDeliveryMen from "../../../hooks/useAllDeliveryMen";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 const AllParcel = () => {
@@ -10,8 +10,6 @@ const AllParcel = () => {
     const [deliveryMenId, setDeliveryMenId] = useState(null)
     const [approximateDeliveryDate, setApproximateDeliveryDate] = useState(null)
     const [isClicked, setIsClicked] = useState(false);
-    const deliveryMenIdRef = useRef(null);
-    const dateRef = useRef(null);
     console.log(deliveryMenId, approximateDeliveryDate, bookingId, isClicked);
 
     const { data: parcels = [] } = useQuery({

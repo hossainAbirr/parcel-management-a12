@@ -1,8 +1,10 @@
-# React + Vite
+# Website Name : Parcel Management
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Livesite Link : https://parcel-management-a57ac.web.app/
 
-Currently, two official plugins are available:
+- 1 : Login registration integrated from firebase
+- 2 : Client can add a product
+- 3 : Client can Update a product
+- 4 : We made some important page private so that one unable to access the page without logging in .
+- 5 : private page will redirect the user to the login page also after logging in he will be redirected to the destination he was trying 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
