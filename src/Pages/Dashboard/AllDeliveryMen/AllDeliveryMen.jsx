@@ -1,17 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import useAllDeliveryMen from "../../../hooks/useAllDeliveryMen";
+
 
 const AllDeliveryMen = () => {
-    const axiosPublic = useAxiosPublic();
-    const { data: allDeliveryMen = [], refetch } = useQuery({
-        queryKey: ['allDeliveryMen'],
-        queryFn: async () => {
-            const res = await axiosPublic.get('/allDeliveryMen');
-            console.log(res.data);
-            return res.data
-        }
-    })
+    const [allDeliveryMen, refetch] = useAllDeliveryMen();
 
+    console.log(allDeliveryMen);
     return (
         <div>
             <div className="overflow-x-auto">

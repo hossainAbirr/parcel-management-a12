@@ -1,27 +1,71 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import useAllDeliveryMen from "../../../hooks/useAllDeliveryMen";
+import { useEffect, useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 const AllParcel = () => {
     const axiosPublic = useAxiosPublic();
+    const [bookingId, setBookingId] = useState(null);
+    const [deliveryMenId, setDeliveryMenId] = useState(null)
+    const [approximateDeliveryDate, setApproximateDeliveryDate] = useState(null)
+    const [isClicked, setIsClicked] = useState(false);
+    const deliveryMenIdRef = useRef(null);
+    const dateRef = useRef(null);
+    console.log(deliveryMenId, approximateDeliveryDate, bookingId, isClicked);
+
     const { data: parcels = [] } = useQuery({
         queryKey: ['parcels'],
         queryFn: async () => {
             const res = await axiosPublic.get('/allBookings');
-            console.log(res.data);
             return res.data
         }
     })
+    const [allDeliveryMen, refetch] = useAllDeliveryMen();
 
-    const {data: allDeliveryMen = [] , refetch} = useQuery({
-        queryKey: ['allDeliveryMen'],
-        queryFn: async () => {
-            const role = {role: 'provider'}
-            const res = axiosPublic.get('/allDeliveryMen', role)
-            console.log(res.data);
-            return (await res).data
+    const handleDeliveryMenId = (e) => {
+        setDeliveryMenId(e.target.value)
+        setIsClicked(false)
+    }
+    const handleDate = (e) => {
+        setApproximateDeliveryDate(e.target.value)
+        setIsClicked(false)
+    }
+
+    useEffect(() => {
+        try {
+            const handleAssign = async (id) => {
+                console.log(deliveryMenId, approximateDeliveryDate, bookingId, isClicked);
+                const updated = {
+                    deliveryMenId: deliveryMenId,
+                    approximateDeliveryDate: approximateDeliveryDate,
+                }
+                console.log(id);
+                const res = await axiosPublic.patch(`/updateDeliveryMen/${id}`, updated)
+                if (res.data.modifiedCount) {
+                    Swal.fire({
+                        title: "Good job!",
+                        text: "Data updated successfully!",
+                        icon: "success"
+                    });
+                    // setBookingId(null)
+                    setIsClicked(null)
+                    // setDeliveryMenId(null)
+                    // setApproximateDeliveryDate(null)
+                }
+            }
+            if (isClicked) {
+                handleAssign(bookingId)
+            }
+        } catch (error) {
+            setBookingId(null)
+            setIsClicked(null)
+            setDeliveryMenId(null)
+            setApproximateDeliveryDate(null)
         }
-    })
-    console.log(parcels);
+    }, [bookingId, deliveryMenId, approximateDeliveryDate, isClicked, axiosPublic])
+
+
     return (
         <div>
             <div className="overflow-x-auto">
@@ -51,7 +95,44 @@ const AllParcel = () => {
                                 <td>{parcel?.deliveryPrice}</td>
                                 <td>{parcel?.status}</td>
                                 <td>
-                                    <button className="btn btn-xs">Manage</button>
+                                    <button onClick={() => { setBookingId(parcel._id), document.getElementById('my_modal_2').showModal() }} className="btn btn-xs">Manage</button>
+                                    <dialog id="my_modal_2" className="modal">
+                                        <div className="modal-box">
+                                            <h3 className="text-lg text-center mb-3">Choose A delivery Men</h3>
+                                            <form onSubmit={() => setBookingId(parcel._id)} method="dialog" >
+                                                <select
+                                                    className="select select-bordered w-full "
+                                                    name="deliveryMenId"
+                                                    id=""
+                                                    onChange={(e) => handleDeliveryMenId(e)}
+                                                >
+                                                    <option disabled selected>Select A Delivery Men</option>
+                                                    {allDeliveryMen.map((deliveryMen) =>
+                                                        <option key={deliveryMen._id} value={deliveryMen._id}>
+                                                            {deliveryMen.name}
+                                                        </option>
+                                                    )}
+                                                </select>
+                                                <label className="label">
+                                                    <span className="label-text"
+                                                    >Select An Approximate Delivery Date (within next 7 working
+                                                        days)</span
+                                                    >
+                                                </label>
+                                                <input
+                                                    onChange={(e) => handleDate(e)}
+                                                    type="date"
+                                                    name="approximateDeliveryDate"
+                                                    placeholder="Type here"
+                                                    className="input input-bordered w-full my-3"
+                                                />
+                                                <button onClick={() => setIsClicked(true)} className="btn">Assign Delivery Men</button>
+                                            </form>
+                                        </div>
+                                        <form method="dialog" className="modal-backdrop">
+                                            <button>close</button>
+                                        </form>
+                                    </dialog>
                                 </td>
                             </tr>)
                         }
