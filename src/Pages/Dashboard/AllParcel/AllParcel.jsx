@@ -12,14 +12,14 @@ const AllParcel = () => {
     const [isClicked, setIsClicked] = useState(false);
     console.log(deliveryMenId, approximateDeliveryDate, bookingId, isClicked);
 
-    const { data: parcels = [] } = useQuery({
+    const { data: parcels = [], refetch } = useQuery({
         queryKey: ['parcels'],
         queryFn: async () => {
             const res = await axiosPublic.get('/allBookings');
             return res.data
         }
     })
-    const [allDeliveryMen, refetch] = useAllDeliveryMen();
+    const [allDeliveryMen] = useAllDeliveryMen();
 
     const handleDeliveryMenId = (e) => {
         setDeliveryMenId(e.target.value)
@@ -35,8 +35,9 @@ const AllParcel = () => {
             const handleAssign = async (id) => {
                 console.log(deliveryMenId, approximateDeliveryDate, bookingId, isClicked);
                 const updated = {
-                    deliveryMenId: deliveryMenId,
+                    status: 'On The Way',
                     approximateDeliveryDate: approximateDeliveryDate,
+                    deliveryMenId: deliveryMenId,
                 }
                 console.log(id);
                 const res = await axiosPublic.patch(`/updateDeliveryMen/${id}`, updated)
@@ -48,6 +49,7 @@ const AllParcel = () => {
                     });
                     // setBookingId(null)
                     setIsClicked(null)
+                    refetch();
                     // setDeliveryMenId(null)
                     // setApproximateDeliveryDate(null)
                 }
@@ -61,7 +63,7 @@ const AllParcel = () => {
             setDeliveryMenId(null)
             setApproximateDeliveryDate(null)
         }
-    }, [bookingId, deliveryMenId, approximateDeliveryDate, isClicked, axiosPublic])
+    }, [bookingId, deliveryMenId, approximateDeliveryDate, isClicked, axiosPublic, refetch])
 
 
     return (

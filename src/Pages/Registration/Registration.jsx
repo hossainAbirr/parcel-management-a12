@@ -76,7 +76,7 @@ const Registration = () => {
                             photoURL: imageUrl.data.display_url,
                         })
                     }
-                    axiosPublic.post('http://localhost:2132/users', userInfo)
+                    axiosPublic.post('https://parcel-management-server-green.vercel.app/users', userInfo)
                         .then(result => {
                             console.log(result);
                         })
@@ -138,7 +138,7 @@ const Registration = () => {
                                             onChange={handleChange}
                                         >
                                             <MenuItem value={'user'}>User</MenuItem>
-                                            <MenuItem value={'delivery'}>Delivery Man</MenuItem>
+                                            <MenuItem value={'provider'}>Delivery Man</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </Grid>

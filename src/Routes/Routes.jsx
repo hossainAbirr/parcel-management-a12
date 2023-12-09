@@ -13,6 +13,8 @@ import AllParcel from "../Pages/Dashboard/AllParcel/AllParcel";
 import AllDeliveryMen from "../Pages/Dashboard/AllDeliveryMen/AllDeliveryMen";
 import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
 import Statistics from "../Pages/Dashboard/Statistics/Statistics";
+import MyDeliveryList from "../Pages/Dashboard/MyDeliveryList/MyDeliveryList";
+import MyReview from "../Pages/Dashboard/MyReview/MyReview";
 
 const myRouter = createBrowserRouter([
     {
@@ -58,20 +60,30 @@ const myRouter = createBrowserRouter([
 
             // admin routes 
             {
-                path:'/dashboard/statistics',
+                path: '/dashboard/statistics',
                 element: <PrivateRoute><Statistics></Statistics></PrivateRoute>
             },
             {
-                path:'/dashboard/allParcel',
+                path: '/dashboard/allParcel',
                 element: <PrivateRoute><AllParcel></AllParcel></PrivateRoute>
             },
             {
-                path:'/dashboard/allDeliveryMen',
+                path: '/dashboard/allDeliveryMen',
                 element: <PrivateRoute><AllDeliveryMen></AllDeliveryMen></PrivateRoute>
             },
             {
-                path:'/dashboard/allUsers',
+                path: '/dashboard/allUsers',
                 element: <PrivateRoute><AllUsers></AllUsers></PrivateRoute>
+            },
+
+            // delivery men route
+            {
+                path: '/dashboard/myDeliveryList',
+                element: <PrivateRoute><MyDeliveryList></MyDeliveryList></PrivateRoute>
+            },
+            {
+                path: '/dashboard/myReview',
+                element: <PrivateRoute><MyReview></MyReview></PrivateRoute>
             }
         ]
     }

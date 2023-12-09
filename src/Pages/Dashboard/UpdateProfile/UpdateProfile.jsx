@@ -4,25 +4,20 @@ import useAuth from "../../../hooks/useAuth";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { imageUpload } from "../../../hooks/imageUpload";
+import useCurrentUserFromDbByEmail from "../../../hooks/useCurrentUserFromDbByEmail";
 
 const UpdateProfile = () => {
     const axiosPublic = useAxiosPublic();
     const [selectedImage, setSelectedImage] = useState(null);
     const { user, updateUserProfile } = useAuth();
-    console.log(user);
-    const { data: currentUser, refetch } = useQuery({
-        queryKey: ['currentUser'],
-        queryFn: async () => {
-            const res = await axiosPublic.get(`/user?email=${user?.email}`)
-            console.log(res.data);
-            return res.data
-        },
-    })
     const handleChangeFile = (e) => {
         const image = e.target.files[0];
         console.log(image);
         setSelectedImage(image);
     }
+
+    const [currentUser] = useCurrentUserFromDbByEmail();
+    console.log(currentUser);
 
     const handleUploadBtn = async () => {
         if (!selectedImage) {
@@ -39,17 +34,6 @@ const UpdateProfile = () => {
 
         const res = await updateUserProfile(user, user.displayName, imageUrl)
         console.log(res);
-            // .then(() => {
-            //     Swal.fire({
-            //         title: 'Congratulation!',
-            //         text: 'Your profile has been updated',
-            //         icon: 'success',
-            //     })
-            // })
-            // .cathc(error => {
-            //     console.error(error);
-            // })
-
     }
 
     return (

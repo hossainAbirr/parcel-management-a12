@@ -45,7 +45,7 @@ const Login = () => {
                         email: result.user?.email,
                         role: '',
                     }
-                    axiosPublic.post('http://localhost:2132/users', userInfo)
+                    axiosPublic.post('https://parcel-management-server-green.vercel.app/users', userInfo)
                         .then(result => {
                             console.log(result);
                         })
